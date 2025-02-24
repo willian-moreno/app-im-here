@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Participant } from '../../components/participant'
 import { styles } from './styles'
 
@@ -15,12 +15,36 @@ export function Home() {
   const isAddParticipantDisabled = participantName.length === 0
 
   function handleAddParticipant() {
+    const participantAlreadyExists =
+      participants.findIndex((participant) => participant.name === participantName) !== -1
+
+    if (participantAlreadyExists) {
+      Alert.alert('Não disponível', 'Já existe um participante na lista com esse nome.')
+      return
+    }
+
     setParticipants((state) => [{ id: createGuid(), name: participantName }, ...state])
     setParticipantName('')
   }
 
   function handleRemoveParticipant(id: string) {
-    setParticipants((state) => state.filter((item) => item.id !== id))
+    const participant = participants.find((participant) => participant.id === id)
+    if (!participant) {
+      return
+    }
+
+    Alert.alert('Remover', `Remover o participante ${participant.name}?`, [
+      {
+        text: 'Sim',
+        onPress: () => {
+          setParticipants((state) => state.filter((item) => item.id !== id))
+        },
+      },
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+    ])
   }
 
   function createGuid() {
