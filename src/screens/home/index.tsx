@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Participant } from '../../components/participant'
 import { styles } from './styles'
 
@@ -71,16 +71,6 @@ export function Home() {
           </Text>
         )}
       />
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {participants.map((participant) => (
-          <Participant
-            key={participant.id}
-            name={participant.name}
-            onRemove={() => handleRemoveParticipant(participant.id)}
-          />
-        ))}
-      </ScrollView>
     </View>
   )
 }
